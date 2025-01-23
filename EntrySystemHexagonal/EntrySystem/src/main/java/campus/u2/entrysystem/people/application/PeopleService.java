@@ -144,7 +144,7 @@ public class PeopleService  {
 
         Optional<People> existingPeopleOpt = peopleRepository.getPeopleByCedula(cedula);
         if (existingPeopleOpt.isPresent()) {
-            peopleRepository.deletePeople(existingPeopleOpt.get().getCedula());
+            peopleRepository.deletePeople(existingPeopleOpt.get().getId());
         } else {
             throw new GlobalException("Unexpected error, please try again");
         }

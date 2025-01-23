@@ -19,7 +19,7 @@ public interface PeopleRepository {
     People removeEquipmentFromPerson(Long personId, Long equipmentId);
     List<RegisteredEquipment> findEquipmentByPeopleId(Long peopleId);
 //    People updatePeople(People peopleToUpdate);
-    void deletePeople(String id);
+    void deletePeople(Long id);
     List<People> listAllPeople();
     Optional<People>  getPeopleById(Long id);
 //    People updatePeopleCompany(Long peopleId, Company newCompany);
