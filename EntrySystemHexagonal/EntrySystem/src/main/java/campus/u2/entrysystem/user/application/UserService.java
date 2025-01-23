@@ -39,7 +39,7 @@ public class UserService {
         }
         user.setPorter(porter);
         porter.setUser(user);
-        return userRepository.createUser(user);
+        return userRepository.saveUser(user);
     }
 
     // To get a User by Porter
@@ -85,6 +85,8 @@ public User getUserByPorter(Porters porter) {
         }
     }
 
+    
+    
     // To list all Users
     public List<User> listAllUsers() {
         return userRepository.findAll();
