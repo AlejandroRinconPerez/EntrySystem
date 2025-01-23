@@ -101,8 +101,8 @@ public class PeopleAdapter implements PeopleRepository {
       
     @Override
      @Transactional
-    public void deletePeople(String cedula) {
-        Optional<People> existingPeopleOpt = peopleJpaRepository.findByCedula(cedula);
+    public void deletePeople(Long id) {
+        Optional<People> existingPeopleOpt = peopleJpaRepository.findById(id);
         if (existingPeopleOpt.isPresent()) {
             peopleJpaRepository.delete(existingPeopleOpt.get());
         }  
