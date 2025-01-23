@@ -7,12 +7,12 @@ import java.util.Optional;
 public interface MembershipRepository {
     
     Membership save(Membership membership);
-    Optional<Membership> findById(Long idMembership); // Cambiar el nombre del método para que coincida con el uso en MembershipService
-    List<Membership> findAll(); // Método para listar todas las membresías
-    void delete(Membership membership); // Método para eliminar una membresía
-    boolean existsById(Long idMembership); // Método para comprobar si una membresía existe por ID
+    Optional<Membership> findById(Long idMembership); 
+    List<Membership> findAll(); 
+    void delete(Membership membership); 
+//    boolean existsById(Long idMembership); Comentado por que no se esta usando no se para que esta el service no lo usa 
     
-    List<Membership> findByDuration(Integer duration); // Método para encontrar membresías por duración
-    List<Membership> findByPrice(Double price); // Método para encontrar membresías por precio
-    List<Membership> findByPriceLessThan(Double price); // Método para encontrar membresías con precio menor que
+    List<Membership> findByDuration(Integer duration);
+    List<Membership> findByPrice(Double price); 
+    List<Membership> findByPriceLessThan(Double price); 
 }
