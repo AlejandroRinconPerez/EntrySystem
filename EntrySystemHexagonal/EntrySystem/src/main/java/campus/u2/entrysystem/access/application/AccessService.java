@@ -1,30 +1,31 @@
 package campus.u2.entrysystem.access.application;
 
-import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
+import campus.u2.entrysystem.utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.access.domain.Access;
 import campus.u2.entrysystem.accessnotes.domain.AccessNote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
-import org.springframework.transaction.annotation.Transactional;
 import campus.u2.entrysystem.porters.application.PortersRepository;
 import campus.u2.entrysystem.porters.domain.Porters;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccessService {
 
+    // Attributes 
+    private final AccessRepository accessRepository;
+    private final PortersRepository portersRepository;
+
+    // Constructor
     @Autowired
-    private AccessRepository accessRepository;
+    public AccessService(AccessRepository accessRepository, PortersRepository portersRepository) {
+        this.accessRepository = accessRepository;
+        this.portersRepository = portersRepository;
+    }
 
-    @Autowired
-    private PortersRepository portersRepository;
-
-    @Transactional
-
+    // To create an anccess
     public Access createAccess(Access access) {
         if (access == null) {
             throw new GlobalException("Empty object, please try again ");
@@ -32,23 +33,28 @@ public class AccessService {
         return accessRepository.createAccess(access);
     }
 
-    @Transactional
-
+    // To delete and access 
     public void deleteAccess(Long id) {
-
         if (id == null) {
-            throw new GlobalException("Invalid Id try again");
-        } 
-        accessRepository.getAccessById(id);
+            throw new GlobalException("Id not valid please try again");
+        }
+        Optional<Access> accessOpt = accessRepository.getAccessById(id);
+        if (accessOpt.isPresent()) {
+            accessRepository.deleteAccess(accessOpt.get().getIdAccess());
+        } else {
+            throw new GlobalException("Unexpected error, please try again");
+        }
     }
 
+    // To get all accesses
     public List<Access> getAllAccesses() {
         return accessRepository.getAllAccesses();
     }
 
+    // To get an access by id
     public Access getAccessById(Long id) {
         if (id == null) {
-            throw new GlobalException("Id not Valid please try again" + id);
+            throw new GlobalException("Id not valid please try again");
         }
         Optional<Access> accessOpt = accessRepository.getAccessById(id);
         if (accessOpt.isPresent()) {
@@ -58,9 +64,7 @@ public class AccessService {
         }
     }
 
-    @Transactional
-
-    
+    // To add a note to an access
     public Access addAccessNoteToAccess(Long accessId, AccessNote accessNote) {
         if (accessId == null || accessNote == null) {
             throw new GlobalException("Error with the inputs please try again");
@@ -71,33 +75,12 @@ public class AccessService {
             return accessRepository.createAccess(accessOpt.get());
 
         } else {
-            throw new GlobalException("Access note with Id" + accessId + "  Not Found");
+            throw new GlobalException("Access note with Id" + accessId + "  not found");
         }
 
     }
 
-//    @Transactional
-//    
-//    public Access addPorterToAccess(Long accessId, Long porterId) {
-//        Optional<Access> accessOpt = accessRepository.findById(accessId);
-//        if (accessOpt.isPresent()) {
-//            Access access = accessOpt.get();
-//            Optional<Porters> porterOpt = portersRepository.findById(porterId);
-//            if (porterOpt.isPresent()) {
-//                Porters porter = porterOpt.get();
-//                access.getPorters().add(porter);
-//                porter.getAccesses().add(access);
-//                accessRepository.save(access);
-//                portersRepository.save(porter);
-//                return access;
-//            }
-//        }
-//        return null;
-//    }
-    
-    
-    
-        @Transactional
+    // To add a porter to an access
     public Access addPorterToAccess(Long accessId, Long porterId) {
         Access access = accessRepository.getAccessById(accessId)
                 .orElseThrow(() -> new RuntimeException("Access with ID " + accessId + " not found."));
@@ -110,12 +93,7 @@ public class AccessService {
         return access;
     }
 
-    
-    
-    
-
-    @Transactional
-
+    // To remove a porter from an access
     public Access removePorterFromAccess(Long accessId, Long porterId) {
         Optional<Access> accessOpt = accessRepository.getAccessById(accessId);
         if (accessOpt.isPresent()) {
@@ -123,61 +101,22 @@ public class AccessService {
             Optional<Porters> porterOpt = portersRepository.getPorterById(porterId);
             if (porterOpt.isPresent()) {
                 Porters porter = porterOpt.get();
-                access.getPorters().remove(porter);  // Eliminar el portero del acceso
-                porter.getAccesses().remove(access);  // Eliminar el acceso del portero
-                accessRepository.createAccess(access);  // Guardar el acceso actualizado
-                portersRepository.savePorter(porter);  // Guardar el portero actualizado
+                access.getPorters().remove(porter);  // Delete the porter in the access
+                porter.getAccesses().remove(access);  // Delete the access in the porter
+                accessRepository.createAccess(access);  // Save the update access
+                portersRepository.savePorter(porter);  // Save the update porter
                 return access;
             }
         }
-        return null;  // Si no se encuentra el acceso o el portero
+        return null;  // If the porter or the access is not found
     }
 
-    
-    
-    @Transactional
-
-    public Access updatePorterInAccess(Long accessId, Long porterId, Porters updatedPorter) {
-        Optional<Access> accessOpt = accessRepository.getAccessById(accessId);
-        if (accessOpt.isPresent()) {
-            Access access = accessOpt.get();
-            Optional<Porters> porterOpt = portersRepository.getPorterById(porterId);
-            if (porterOpt.isPresent()) {
-                Porters porter = porterOpt.get();
-                // Actualizar el // Actualizarportero en el acceso (puedes agregar lógica para la actualización)
-                porter.setName(updatedPorter.getName());
-                porter.setPosition(updatedPorter.getPosition());
-                porter.setEmploymentDate(updatedPorter.getEmploymentDate());
-                portersRepository.savePorter(porter);  
-                return access;
-            }
-        }
-        return null;  // Si no se encuentra el acceso o el portero
-    }
-
-    
-    
+    // To find all the access between two dates
     public List<Access> findAccessBetweenDates(Date startDate, Date endDate) {
-        if (startDate == null || endDate == null){
-            throw  new GlobalException("Date is not Valid");
+        if (startDate == null || endDate == null) {
+            throw new GlobalException("Date is not valid");
         }
         return accessRepository.findAccessBetweenDates(startDate, endDate);
     }
 
-    //
-//    @Transactional
-//    
-//    public Access updateAccess(Long id, Access updatedAccess)  {
-//        Access accessOpt = accessRepository.getAccessById(id);
-//        if (accessRepository.getAccessById(id)>=0) {
-//            Access existingAccess = accessOpt.get();
-//            existingAccess.setEntryAccess(updatedAccess.getEntryAccess());
-//            existingAccess.setExitAccess(updatedAccess.getExitAccess());
-//            existingAccess.setAccessType(updatedAccess.isAccessType());
-//            existingAccess.setPeople(updatedAccess.getPeople());
-//            return accessRepository.createAccess(existingAccess);
-//        } else {
-//            throw new RuntimeException("Access with ID " + id + " not found.");
-//        }
-//    }
 }
