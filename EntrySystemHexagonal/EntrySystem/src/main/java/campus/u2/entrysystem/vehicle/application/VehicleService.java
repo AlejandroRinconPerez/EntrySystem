@@ -47,35 +47,26 @@ public class VehicleService {
         if (id == null) {
             throw new GlobalException("ID cannot be null");
         }
-        if (vehicleRepository.existsById(id)) {
-            vehicleRepository.deleteById(id);
+        Optional<Vehicle> existingVehicleOpt = vehicleRepository.findById(id);
+        if (existingVehicleOpt.isPresent()) {
+            vehicleRepository.deleteById(existingVehicleOpt.get().getIdVehicle());
         } else {
-            throw new GlobalException("Vehicle with ID " + id + " not found.");
+            throw new GlobalException("Unexpected error, please try again");
         }
-    }
 
-    @Transactional
-    public Vehicle updateVehicle(Vehicle vehicle) {
-        if (vehicle == null) {
-            throw new GlobalException("Vehicle cannot be null");
-        }
-        Optional<Vehicle> existingVehicle = vehicleRepository.findById(vehicle.getIdVehicle());
-        if (existingVehicle.isPresent()) {
-            Vehicle vehicleUpdate = existingVehicle.get();
-            vehicleUpdate.setPlate(vehicle.getPlate());
-            vehicleUpdate.setVehicleType(vehicle.isVehicleType());
-            vehicleUpdate.setPeople(vehicle.getPeople());
-            return vehicleRepository.save(vehicleUpdate);
-        } else {
-            throw new GlobalException("Vehicle with ID " + vehicle.getIdVehicle() + " not found.");
-        }
     }
+    
+    
+
+
 
     @Transactional
     public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
     }
 
+    
+    
     @Transactional
     public Optional<Vehicle> findVehicleByPlate(String plate) {
         if (plate == null || plate.isEmpty()) {
