@@ -1,6 +1,5 @@
 package campus.u2.entrysystem.access.infrastructure;
 
-
 import campus.u2.entrysystem.access.domain.Access;
 import java.util.Date;
 import java.util.List;
