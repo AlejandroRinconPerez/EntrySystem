@@ -6,6 +6,8 @@ import campus.u2.entrysystem.invoice.domain.Invoice;
 import campus.u2.entrysystem.company.domain.Company;
 import campus.u2.entrysystem.carnet.domain.Carnet;
 import campus.u2.entrysystem.Utilities.BaseClassPeople;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,8 +22,9 @@ import java.util.List;
 public class People extends BaseClassPeople {
 
     private Boolean personType;
-
-    @ManyToOne(cascade =  CascadeType.ALL )
+    
+    @JsonManagedReference
+    @ManyToOne(cascade =  CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_company", nullable = true)
     private Company company;
 
