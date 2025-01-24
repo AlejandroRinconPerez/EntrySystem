@@ -5,7 +5,7 @@ import campus.u2.entrysystem.access.domain.Access;
 import campus.u2.entrysystem.accessnotes.domain.AccessNote;
 import campus.u2.entrysystem.porters.application.PortersService;
 import campus.u2.entrysystem.porters.domain.Porters;
-import campus.u2.entrysystem.utilities.exceptions.GlobalException;
+import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
