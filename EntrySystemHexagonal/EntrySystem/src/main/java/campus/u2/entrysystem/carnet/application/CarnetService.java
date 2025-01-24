@@ -17,16 +17,22 @@ public class CarnetService {
         this.carnetRepository = carnetRepository;
     }
 
-    //To create a carnet 
+    //To save a carnet 
     public Carnet saveCarnet(Carnet carnet) {
         if (carnet == null) {
             throw new GlobalException("Empty object, please try again");
         }
         return carnetRepository.saveCarnet(carnet);
     }
+    
+    // To create a new carnet 
+    public Carnet createCarnet(){
+        Carnet carnet = new Carnet(); 
+        return carnetRepository.saveCarnet(carnet);
+    }
 
-    // To create a carnet for a person
-    public Carnet saveCarnet(People people, Carnet carnet) {
+    // To save a carnet for a person
+    public Carnet saveCarnetForPerson(People people, Carnet carnet) {
         carnet.setPeople(people);
          if (people.getCarnet() == null || !people.getCarnet().equals(carnet)) {
             people.setCarnet(carnet);
