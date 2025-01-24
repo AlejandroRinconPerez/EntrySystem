@@ -14,7 +14,7 @@ public class Carnet {
     private String code; 
     
     @Column(nullable = false)
-    private boolean status;
+    private Boolean status;
     
     @OneToOne
     @JoinColumn(name = "id_people", nullable = false)
@@ -47,7 +47,7 @@ public class Carnet {
         return status; 
     }
     
-    public void setStatus(boolean status){
+    public void setStatus(Boolean status){
         this.status = status; 
     }
     
