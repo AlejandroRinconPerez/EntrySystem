@@ -1,78 +1,78 @@
 package campus.u2.entrysystem.carnet.infrastructure;
 
+import campus.u2.entrysystem.carnet.application.CarnetService;
+import campus.u2.entrysystem.carnet.domain.Carnet;
+import campus.u2.entrysystem.people.application.PeopleService;
+import campus.u2.entrysystem.people.domain.People;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/carnet")
 public class CarnetController {
-//    package campus.u2.entrysystem.carnet.application;
-//
-//import campus.u2.entrysystem.carnet.domain.Carnet;
-//import campus.u2.entrysystem.people.domain.People;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/api/carnet")
-//public class CarnetController {
-//
-//    private final CarnetService carnetService;
-//
-//    @Autowired
-//    public CarnetController(CarnetService carnetService) {
-//        this.carnetService = carnetService;
-//    }
-//
-//    // To create a new carnet
-//    @PostMapping("/create")
-//    public ResponseEntity<Carnet> createCarnet() {
-//        Carnet carnet = carnetService.createCarnet();
-//        return ResponseEntity.ok(carnet);
-//    }
-//
-//    // To save a carnet
-//    @PostMapping("/")
-//    public ResponseEntity<Carnet> saveCarnet(@RequestBody Carnet carnet) {
-//        Carnet savedCarnet = carnetService.saveCarnet(carnet);
-//        return ResponseEntity.ok(savedCarnet);
-//    }
-//
-//    // To save a carnet for a person
-//    @PostMapping("/person/{idPerson}")
-//    public ResponseEntity<Carnet> saveCarnetForPerson(@PathVariable Long idPerson, @RequestBody Carnet carnet) {
-//        People people = new People(); // Aquí debes recuperar el objeto People por idPerson, si es necesario
-//        people.setId(idPerson);
-//        Carnet savedCarnet = carnetService.saveCarnetForPerson(people, carnet);
-//        return ResponseEntity.ok(savedCarnet);
-//    }
-//
-//    // To show all the carnets
-//    @GetMapping("/")
-//    public ResponseEntity<List<Carnet>> getAllCarnets() {
-//        List<Carnet> carnets = carnetService.getAllCarnets();
-//        return ResponseEntity.ok(carnets);
-//    }
-//
-//    // To find a carnet by ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Carnet> getCarnetById(@PathVariable Long id) {
-//        Carnet carnet = carnetService.getCarnetById(id);
-//        return ResponseEntity.ok(carnet);
-//    }
-//
-//    // To find a carnet by People
-//    @GetMapping("/person/{idPerson}")
-//    public ResponseEntity<Carnet> findCarnetByPeople(@PathVariable Long idPerson) {
-//        People people = new People(); // Aquí también debes recuperar el objeto People por idPerson
-//        people.setId(idPerson);
-//        Carnet carnet = carnetService.findCarnetByPeople(people);
-//        return ResponseEntity.ok(carnet);
-//    }
-//}
+    
+    // Attributes 
+    private final CarnetService carnetService; 
+    private final PeopleService peopleService; 
+    
+    // Constructor 
+    @Autowired 
+    public CarnetController(CarnetService carnetService, PeopleService peopleService) {
+        this.carnetService = carnetService; 
+        this.peopleService = peopleService; 
+    }
+    
+    // Methods 
+    
+    // To get all the carnets 
+    @GetMapping
+    public List<Carnet> getAllCarnets() {
+        return carnetService.getAllCarnets();
+    }
+        
+    // To get an access for the id 
+    @GetMapping("/{id}")
+    public Carnet getCarnetById(@PathVariable Long id) {
+        return carnetService.getCarnetById(id); 
+    }
+        
+    // To create a carnet 
+    @PostMapping
+    public Carnet createCarnet(@RequestBody Carnet carnet) {
+        return carnetService.saveCarnet(carnet); 
+    }
+    
+    // To save a carnet for a person 
+    @PostMapping("/people/{idPerson}")
+    public Carnet saveCarnetForPerson(@PathVariable Long idPeople, @RequestBody Carnet carnet) {
+        People people = peopleService.getPeopleById(idPeople); 
+        if (people != null) {
+            return carnetService.saveCarnetForPerson(people, carnet);
+        } else {
+            return null; 
+        }
+    }
+    
+    // To find a carnet by id people 
+    @GetMapping("/people/{idPeople }")
+    public Carnet findCarnetByPeople(@PathVariable Long idPeople) {
+        People people = peopleService.getPeopleById(idPeople); 
+        if (people != null && people.getCarnet() != null) {
+            return carnetService.getCarnetById(people.getCarnet().getId());
+        }
+        return null; 
+    }
+    
+    // To update the status of the carnet 
+    //@PutMapping("/{carnetId }")
+
+
 // // To update the status of the carnet
 //    @PutMapping("/{carnetId}/status")
 //    public ResponseEntity<Carnet> updateCarnetStatus(@PathVariable Long carnetId, @RequestParam boolean newStatus) {
