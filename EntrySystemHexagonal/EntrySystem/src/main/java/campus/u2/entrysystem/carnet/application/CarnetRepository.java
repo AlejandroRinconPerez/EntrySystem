@@ -1,4 +1,3 @@
-
 package campus.u2.entrysystem.carnet.application;
 
 import campus.u2.entrysystem.carnet.domain.Carnet;
@@ -9,8 +8,6 @@ import java.util.Optional;
 public interface CarnetRepository {
 
     Carnet saveCarnet(Carnet carnet);
-
-    Carnet saveCarnet(People people, Carnet carnet);
 
     List<Carnet> getAllCarnets();
 
