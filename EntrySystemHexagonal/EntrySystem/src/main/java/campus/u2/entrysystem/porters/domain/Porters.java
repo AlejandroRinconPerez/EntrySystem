@@ -2,7 +2,7 @@ package campus.u2.entrysystem.porters.domain;
 
 import campus.u2.entrysystem.user.domain.User;
 import campus.u2.entrysystem.access.domain.Access;
-import campus.u2.entrysystem.Utilities.BaseClassPeople;
+import campus.u2.entrysystem.utilities.BaseClassPeople;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,39 +13,28 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 public class Porters extends BaseClassPeople {
 
-    
     @Temporal(TemporalType.DATE)
     @Column(nullable = true)
 
     private Date employmentDate;
-    
-    
 
-
-    
-    
-    
     private Boolean position;
 
     @ManyToOne
     @JoinColumn(name = "id_jefe")
     private Porters id_jefe;
-    
-    
-     @ManyToMany(mappedBy = "porters") 
-    private Set<Access> accesses;
-     
-     
-     @OneToOne(mappedBy = "porter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-     private User user;
 
+    @ManyToMany(mappedBy = "porters")
+    private Set<Access> accesses;
+
+    @OneToOne(mappedBy = "porter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private User user;
 
     public Porters() {
     }
@@ -95,7 +84,6 @@ public class Porters extends BaseClassPeople {
         this.id_jefe = id_jefe;
     }
 
-  
     public Set<Access> getAccesses() {
         return accesses;
     }
@@ -116,10 +104,5 @@ public class Porters extends BaseClassPeople {
     public String toString() {
         return "Porters{" + "employmentDate=" + employmentDate + ", position=" + position + ", id_jefe=" + id_jefe + ", accesses=" + accesses + ", user=" + user + '}';
     }
-    
-    
-
-
- 
 
 }
