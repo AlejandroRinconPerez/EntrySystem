@@ -3,7 +3,6 @@ package campus.u2.entrysystem.accessnotes.domain;
 import campus.u2.entrysystem.access.domain.Access;
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "access_note")
 
