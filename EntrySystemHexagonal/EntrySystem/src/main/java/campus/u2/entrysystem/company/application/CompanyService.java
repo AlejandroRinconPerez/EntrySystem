@@ -1,11 +1,10 @@
 package campus.u2.entrysystem.company.application;
 
-import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
+import campus.u2.entrysystem.utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.company.domain.Company;
 import campus.u2.entrysystem.people.domain.People;
 import java.util.List;
 import java.util.Optional;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,80 +18,87 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    // to Save company  first time 
-    @Transactional
-
+    // To save a company 
     public Company saveCompany(Company company) {
         if (company == null) {
-            throw new GlobalException("Company Objt is not Valid");
+            throw new GlobalException("Company object is null");
         }
-        Company companyValidate = new Company(company.getName());
-        return companyRepository.save(companyValidate);
+        return companyRepository.saveCompany(company);
     }
-
-    public Company saveCompanyPeople(Company company, List<People> people) {
-
-        Company comp = new Company(company.getName());
-        for (People person : people) {
-            People p = new People();
-            p.setName(person.getName());
-            p.setCedula(person.getCedula());
-            p.setTelefono(person.getTelefono());
-            p.setPersonType(person.getPersonType());
-            p.setCompany(comp);
-            comp.addPeople(p);
+    
+    // To create a new company
+    public Company createCompany(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new GlobalException("Name cannot be empty");
         }
-        return companyRepository.save(comp);
-
+        if (companyRepository.existsByNameCompany(name)) {
+        throw new GlobalException("A company with this name already exists.");
     }
-
-    // To delete a company
-    @Transactional
-
+        Company company = new Company(name);
+        return companyRepository.saveCompany(company);
+    }
+    
+    // To add an employee or empleoyees in a company
+    public Company addEmployeesToCompany(Company company, List<People> employees) {
+        if (company == null || employees == null || employees.isEmpty()) {
+            throw new GlobalException("Company or employee list is null or empty");
+        }
+        
+        
+        for (People employee : employees) {
+            if (employee == null) {
+                throw new GlobalException("Employee is null");
+            }
+            employee.setCompany(company);
+            company.addPeople(employee); 
+        }
+        return companyRepository.saveCompany(company); 
+    }
+    
+    // To delete a company 
     public void deleteCompany(Long id) {
-
-        Optional<Company> companyOpt = companyRepository.getCompanyById(id);
+        Optional<Company> companyOpt = companyRepository.getCompanyById(id); 
         if (companyOpt.isPresent()) {
-            Company companyValidated = companyOpt.get();
-            companyRepository.deleteCompany(companyValidated.getId_company());
-
+            Company company = companyOpt.get(); 
+            companyRepository.deleteCompany(company.getId_company());
         } else {
-            throw new RuntimeException("Company with ID " + id + " not found.");
+            throw new RuntimeException("Company with id " + id + " not found");
         }
-
     }
 
-    
-    
-    // To list all companies
+    // To list all companies 
     public List<Company> listAllCompanies() {
-        return companyRepository.listAllCompanies();
+        return companyRepository.listAllCompanies(); 
     }
-
-    // To get a Company by ID
+    
+    // To get a company by id 
     public Company getCompanyById(Long id) {
         return companyRepository.getCompanyById(id)
-                .orElseThrow(() -> new RuntimeException("Company with ID " + id + " not found."));
+                .orElseThrow(() -> new RuntimeException("Company with id " + id + " not found")); 
+    }
+    
+    // To get employees by the company id
+    public List<People> getEmployeesByCompanyId(Long idCompany) {
+        if (idCompany == null) {
+            throw new GlobalException("Company id cannot be null"); 
+        }
+        List<People> employees = companyRepository.getEmployeesByCompanyId(idCompany); 
+        if (employees == null || employees.isEmpty()) {
+            throw new GlobalException("No employees found for the company with id " + idCompany); 
+        }
+        return employees; 
+    }
+    
+     // To get employees by the company name
+    public List<People> getEmployeesByCompanyName(String name) {
+        if (name == null) {
+            throw new GlobalException("Company name cannot be null"); 
+        }
+        List<People> employees = companyRepository.getEmployeesByCompanyName(name); 
+        if (employees == null || employees.isEmpty()) {
+            throw new GlobalException("No employees found for the company with name " + name); 
+        }
+        return employees; 
     }
 
-    
-    
-    
-    public List<People> getEmployeesByCompanyId(Long companyId) {
-        return companyRepository.getEmployeesByCompanyId(companyId);
-    }
-
-//        @Transactional
-//   
-//    public Company updateCompany(Company companyToUpdate) {
-//        Optional<Company> existingCompanyOpt = companyRepository.findById(companyToUpdate.getId_company());
-//        if (existingCompanyOpt.isPresent()) {
-//            Company exisitnCompany = existingCompanyOpt.get();
-//            exisitnCompany.setName(companyToUpdate.getName());
-//            return companyRepository.save(exisitnCompany);
-//
-//        } else {
-//            throw new RuntimeException("Company with ID " + companyToUpdate.getId_company() + " not found.");
-//        }
-//    }
 }
