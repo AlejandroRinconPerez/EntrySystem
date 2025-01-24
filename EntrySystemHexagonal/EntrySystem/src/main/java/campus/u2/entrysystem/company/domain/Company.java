@@ -1,6 +1,8 @@
 package campus.u2.entrysystem.company.domain;
 
 import campus.u2.entrysystem.people.domain.People;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +17,8 @@ public class Company {
 
     private Long id_company;
     private String name;
-
+    
+    @JsonBackReference
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<People> peopleList = new ArrayList<>();
 
