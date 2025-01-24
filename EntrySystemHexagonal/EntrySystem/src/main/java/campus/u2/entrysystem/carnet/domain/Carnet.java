@@ -21,10 +21,12 @@ public class Carnet {
     private People people; 
     
     // Constructor
+
     public Carnet() {
+        
         this.status = true;
-        generateCode(); 
     }
+
     
     // Getters and setters 
     public Long getId(){
@@ -57,6 +59,7 @@ public class Carnet {
     
     public void setPeople (People people) {
         this.people = people; 
+        generateCode();
     }
     
     // Methods 
@@ -65,12 +68,13 @@ public class Carnet {
         return "Carnet{" + "idCarnet=" + idCarnet + ", code=" + code + ", status=" + status +  '}';
     }
     
-    private void generateCode(){
+    private String generateCode(){
         if(idCarnet == null || people == null || people.getCedula() == null) {
             throw new IllegalStateException("Cannot generate code: idCarnet or people.id is null"); 
         }
         this.code = idCarnet + String.valueOf(people.getCedula());
+
+        return   this.code;
     }
-    
 }
 
