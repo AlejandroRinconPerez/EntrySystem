@@ -21,7 +21,7 @@ public class AccessAdapter implements AccessRepository{
     
     //Methods 
 
-    // To create an access
+    // To save an access
     @Override 
     @Transactional
     public Access saveAccess(Access access) {
