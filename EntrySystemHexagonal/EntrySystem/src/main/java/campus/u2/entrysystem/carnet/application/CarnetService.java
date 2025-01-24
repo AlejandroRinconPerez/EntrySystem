@@ -1,6 +1,7 @@
 package campus.u2.entrysystem.carnet.application;
 
-import campus.u2.entrysystem.utilities.exceptions.GlobalException;
+
+import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.carnet.domain.Carnet;
 import campus.u2.entrysystem.people.domain.People;
 import java.util.List;
