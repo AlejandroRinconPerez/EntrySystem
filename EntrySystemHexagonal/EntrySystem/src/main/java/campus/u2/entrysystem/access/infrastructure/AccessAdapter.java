@@ -1,11 +1,9 @@
 package campus.u2.entrysystem.access.infrastructure;
 
 import campus.u2.entrysystem.access.application.AccessRepository;
-import campus.u2.entrysystem.utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.access.domain.Access;
 import org.springframework.stereotype.Service;
 import java.util.Date;
-import campus.u2.entrysystem.porters.domain.Porters;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +24,7 @@ public class AccessAdapter implements AccessRepository{
     // To create an access
     @Override 
     @Transactional
-    public Access createAccess(Access access) {
+    public Access saveAccess(Access access) {
         return accessRepository.save(access);
     }
     
