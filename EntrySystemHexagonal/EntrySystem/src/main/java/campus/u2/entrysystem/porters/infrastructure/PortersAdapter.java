@@ -5,7 +5,10 @@ import campus.u2.entrysystem.porters.domain.Porters;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class PortersAdapter implements PortersRepository {
 
     // Attributes 
