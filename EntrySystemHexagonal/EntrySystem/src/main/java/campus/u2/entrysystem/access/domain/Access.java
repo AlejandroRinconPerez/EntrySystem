@@ -30,7 +30,7 @@ public class Access {
     private Date exitAccess;
 
     @Column(nullable = true)
-    private boolean accessType;
+    private Boolean accessType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_people", nullable = true)
@@ -42,8 +42,6 @@ public class Access {
     @OneToMany(mappedBy = "access", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<AccessNote> accessNotes = new ArrayList<>();
     
-    
-    
     @ManyToMany
     @JoinTable(
         name = "access_porters",
@@ -51,9 +49,6 @@ public class Access {
         inverseJoinColumns = @JoinColumn(name = "porters_id") 
     )
     private Set<Porters> porters;
-
-    
-    
 
     public Access() {
     }
@@ -131,7 +126,6 @@ public class Access {
         this.accessNotes.remove(accessNote);
         accessNote.setAccess(null);
     }
-    
     
      public Set<Porters> getPorters() {
         return porters;
