@@ -2,13 +2,13 @@ package campus.u2.entrysystem.access.infrastructure;
 
 import campus.u2.entrysystem.access.application.AccessRepository;
 import campus.u2.entrysystem.access.domain.Access;
-import org.springframework.stereotype.Service;
 import java.util.Date;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class AccessAdapter implements AccessRepository{
     
     //Atributtes 
