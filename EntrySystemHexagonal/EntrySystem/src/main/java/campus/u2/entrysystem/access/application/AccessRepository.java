@@ -7,14 +7,10 @@ import java.util.Optional;
 
 public interface AccessRepository {
 
-    Access createAccess(Access access);
-
+    Access saveAccess(Access access);
     void deleteAccess(Long id);
-
     List<Access> getAllAccesses();
-
     Optional<Access> getAccessById(Long id);
-    
     List<Access> findAccessBetweenDates(Date startDate, Date endDate);
 
 }

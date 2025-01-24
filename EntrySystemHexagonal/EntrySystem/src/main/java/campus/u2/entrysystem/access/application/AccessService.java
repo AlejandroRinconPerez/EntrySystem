@@ -25,12 +25,29 @@ public class AccessService {
         this.portersRepository = portersRepository;
     }
 
-    // To create an anccess
-    public Access createAccess(Access access) {
+    // Methods 
+    
+    // To save an access
+    public Access saveAccess(Access access) {
         if (access == null) {
             throw new GlobalException("Empty object, please try again ");
         }
-        return accessRepository.createAccess(access);
+        return accessRepository.saveAccess(access);
+    }
+    
+    // To create an access 
+    public Access createAccess(Date entryAccess, Date exitAccess, Boolean accessType) {
+        if (entryAccess == null) {
+            throw new GlobalException("Entry date cannot be empty");
+        }
+        if (exitAccess == null) {
+            throw new GlobalException("Exist date cannot be empty");
+        }
+        if (accessType == null) {
+            throw new GlobalException("Access type cannot be empty");
+        }
+        Access access = new Access(entryAccess, exitAccess, accessType);
+        return accessRepository.saveAccess(access);
     }
 
     // To delete and access 
@@ -65,19 +82,42 @@ public class AccessService {
     }
 
     // To add a note to an access
-    public Access addAccessNoteToAccess(Long accessId, AccessNote accessNote) {
-        if (accessId == null || accessNote == null) {
-            throw new GlobalException("Error with the inputs please try again");
+    public Access addAccessNoteToAccess(Long idAccess, String note) {
+        if (idAccess == null || note == null || note.isEmpty()) {
+            throw new GlobalException("Error with the inputs, please try again"); 
         }
-        Optional<Access> accessOpt = accessRepository.getAccessById(accessId);
+        Optional <Access> accessOpt = accessRepository.getAccessById(idAccess);
         if (accessOpt.isPresent()) {
-            accessOpt.get().addAccessNotes(accessNote);
-            return accessRepository.createAccess(accessOpt.get());
-
+            Access access = accessOpt.get();
+            AccessNote accessNote = new AccessNote(note);
+            access.addAccessNotes(accessNote); 
+            return accessRepository.saveAccess(access);
         } else {
-            throw new GlobalException("Access note with Id" + accessId + "  not found");
+            throw new GlobalException("Access with id " + idAccess + " not found");
         }
-
+    }
+    
+    // To remove a note from an access
+    public Access removeAccessNoteFromAccess(Long idAccess, Long idAccessNote) {
+        if (idAccess == null || idAccessNote == null) {
+            throw new GlobalException("Error with the inputs, please try again"); 
+        }
+        Optional<Access> accessOpt = accessRepository.getAccessById(idAccess);
+        if (accessOpt.isPresent()) {
+            Access access = accessOpt.get(); 
+            Optional<AccessNote> accessNoteOpt = access.getAccessNotes().stream()
+                    .filter(note -> note.getId().equals(idAccessNote))
+                    .findFirst();
+            if (accessNoteOpt.isPresent()) {
+                AccessNote accessNote = accessNoteOpt.get();
+                access.removeAccessNotes(accessNote);
+                return accessRepository.saveAccess(access);
+            } else {
+                throw new GlobalException("AccessNote with id " + idAccessNote + " not found");
+            }
+        } else {
+            throw new GlobalException ("Access with id " + idAccess + "not found");
+        }
     }
 
     // To add a porter to an access
@@ -88,7 +128,7 @@ public class AccessService {
                 .orElseThrow(() -> new RuntimeException("Porter with ID " + porterId + " not found."));
         access.getPorters().add(porter);
         porter.getAccesses().add(access);
-        accessRepository.createAccess(access);
+        accessRepository.saveAccess(access);
         portersRepository.savePorter(porter);
         return access;
     }
@@ -103,7 +143,7 @@ public class AccessService {
                 Porters porter = porterOpt.get();
                 access.getPorters().remove(porter);  // Delete the porter in the access
                 porter.getAccesses().remove(access);  // Delete the access in the porter
-                accessRepository.createAccess(access);  // Save the update access
+                accessRepository.saveAccess(access);  // Save the update access
                 portersRepository.savePorter(porter);  // Save the update porter
                 return access;
             }
