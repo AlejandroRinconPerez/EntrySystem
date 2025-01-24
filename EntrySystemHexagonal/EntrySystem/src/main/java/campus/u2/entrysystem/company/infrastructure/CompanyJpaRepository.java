@@ -12,4 +12,10 @@ public interface CompanyJpaRepository extends JpaRepository<Company, Long> {
 
     @Query("SELECT p FROM People p WHERE p.company.id = :id_company")
     List<People> findEmployeesByCompanyId(@Param("id_company") Long companyId);
+    
+    @Query("SELECT p FROM People p WHERE p.company.name = :name")
+    List<People> findEmployeesByCompanyName(@Param("name") String name);
+    
+    Boolean existsByName(String name);
+   
 }
