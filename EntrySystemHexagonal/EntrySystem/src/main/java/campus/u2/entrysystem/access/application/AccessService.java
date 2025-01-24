@@ -1,7 +1,6 @@
 package campus.u2.entrysystem.access.application;
 
-
-import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
+import campus.u2.entrysystem.utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.access.domain.Access;
 import campus.u2.entrysystem.accessnotes.domain.AccessNote;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class AccessService {
     }
 
     // Methods 
-    
     // To save an access
     public Access saveAccess(Access access) {
         if (access == null) {
@@ -35,7 +33,7 @@ public class AccessService {
         }
         return accessRepository.saveAccess(access);
     }
-    
+
     // To create an access 
     public Access createAccess(Date entryAccess, Date exitAccess, Boolean accessType) {
         if (entryAccess == null) {
@@ -82,30 +80,45 @@ public class AccessService {
         }
     }
 
-    // To add a note to an access
-    public Access addAccessNoteToAccess(Long idAccess, String note) {
-        if (idAccess == null || note == null || note.isEmpty()) {
-            throw new GlobalException("Error with the inputs, please try again"); 
+    // To add a note to an access (with an object) 
+    public Access addAccessNoteToAccess(Long idAccess, AccessNote accessNote) {
+        if (idAccess == null || accessNote == null || accessNote.getNote() == null || accessNote.getNote().isEmpty()) {
+            throw new GlobalException("Error with the inputs, please try again");
         }
-        Optional <Access> accessOpt = accessRepository.getAccessById(idAccess);
+        Optional<Access> accessOpt = accessRepository.getAccessById(idAccess);
         if (accessOpt.isPresent()) {
             Access access = accessOpt.get();
-            AccessNote accessNote = new AccessNote(note);
-            access.addAccessNotes(accessNote); 
+            access.addAccessNotes(accessNote);
             return accessRepository.saveAccess(access);
         } else {
             throw new GlobalException("Access with id " + idAccess + " not found");
         }
     }
-    
-    // To remove a note from an access
-    public Access removeAccessNoteFromAccess(Long idAccess, Long idAccessNote) {
-        if (idAccess == null || idAccessNote == null) {
-            throw new GlobalException("Error with the inputs, please try again"); 
+
+    // To add a note to an access (create inside the accessNote) 
+    public Access addAccessNoteToAccess(Long idAccess, String note) {
+        if (idAccess == null || note == null || note.isEmpty()) {
+            throw new GlobalException("Error with the inputs, please try again");
         }
         Optional<Access> accessOpt = accessRepository.getAccessById(idAccess);
         if (accessOpt.isPresent()) {
-            Access access = accessOpt.get(); 
+            Access access = accessOpt.get();
+            AccessNote accessNote = new AccessNote(note);
+            access.addAccessNotes(accessNote);
+            return accessRepository.saveAccess(access);
+        } else {
+            throw new GlobalException("Access with id " + idAccess + " not found");
+        }
+    }
+
+    // To remove a note from an access
+    public Access removeAccessNoteFromAccess(Long idAccess, Long idAccessNote) {
+        if (idAccess == null || idAccessNote == null) {
+            throw new GlobalException("Error with the inputs, please try again");
+        }
+        Optional<Access> accessOpt = accessRepository.getAccessById(idAccess);
+        if (accessOpt.isPresent()) {
+            Access access = accessOpt.get();
             Optional<AccessNote> accessNoteOpt = access.getAccessNotes().stream()
                     .filter(note -> note.getId().equals(idAccessNote))
                     .findFirst();
@@ -117,7 +130,7 @@ public class AccessService {
                 throw new GlobalException("AccessNote with id " + idAccessNote + " not found");
             }
         } else {
-            throw new GlobalException ("Access with id " + idAccess + "not found");
+            throw new GlobalException("Access with id " + idAccess + "not found");
         }
     }
 
