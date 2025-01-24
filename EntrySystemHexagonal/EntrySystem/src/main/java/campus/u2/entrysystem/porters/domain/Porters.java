@@ -3,6 +3,7 @@ package campus.u2.entrysystem.porters.domain;
 import campus.u2.entrysystem.Utilities.BaseClassPeople;
 import campus.u2.entrysystem.user.domain.User;
 import campus.u2.entrysystem.access.domain.Access;
+import campus.u2.entrysystem.invoice.domain.Invoice;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,10 +12,13 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -36,6 +40,12 @@ public class Porters extends BaseClassPeople {
 
     @OneToOne(mappedBy = "porter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private User user;
+    
+    @OneToMany(mappedBy = "porter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Invoice> invoices = new ArrayList<>();
+    
+    
+    
 
     public Porters() {
     }
@@ -100,6 +110,26 @@ public class Porters extends BaseClassPeople {
     public void setUser(User user) {
         this.user = user;
     }
+
+    
+    
+    
+    public List<Invoice> getInvoices(){
+        return invoices;
+    }
+    
+    
+    public void addInvoice (Invoice invoice){
+        this.invoices.add(invoice);
+        invoice.setPorter(this);
+    }
+//
+
+    public void removeInvoice(Invoice invoice ){
+        this.invoices.remove(invoice);
+        invoice.setPorter(null);
+    }
+    
 
     @Override
     public String toString() {
