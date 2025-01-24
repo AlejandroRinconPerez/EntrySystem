@@ -1,8 +1,7 @@
 package campus.u2.entrysystem.porters.application;
 
-import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
+import campus.u2.entrysystem.utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.porters.domain.Porters;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -21,58 +20,46 @@ public class PortersService {
     }
 
     // To save a porter
-    @Transactional
+    public Porters savePorter(Porters porter) {
+        if (porter == null) {
+            throw new GlobalException("Porter not valid");
+        }
+        return portersRepository.savePorter(porter);
+    }
+
     public Porters savePorter(String name, String cedula, String telefono, Date employmentDate, Boolean position, Porters jefe) {
         Porters porter = new Porters(employmentDate, position, jefe, name, cedula, telefono);
         return portersRepository.savePorter(porter);
-
     }
 
-    @Transactional
-
-    public Porters savePorter(Porters Porters) {
-        if (Porters == null) {
-            throw new GlobalException("Porter not valid");
-        }
-        return portersRepository.savePorter(Porters);
-
-    }
-
-    @Transactional
     public Porters savePorter(String name, String cedula, String telefono, Date employmentDate, Boolean position) {
         Porters porter = new Porters(employmentDate, position, name, cedula, telefono);
         return portersRepository.savePorter(porter);
     }
 
-    @Transactional
-    public void addBossToPorter(Long porters, Long boss) {
-
-        Optional<Porters> porterOpt = portersRepository.getPorterById(porters);
-        Optional<Porters> bossOpt = portersRepository.getPorterById(boss);
+    // To add a boss to a porter
+    public void addBossToPorter(Long idPorter, Long idBoss) {
+        Optional<Porters> porterOpt = portersRepository.getPorterById(idPorter);
+        Optional<Porters> bossOpt = portersRepository.getPorterById(idBoss);
         if (porterOpt.isPresent() || bossOpt.isPresent()) {
             Porters porterObjt = porterOpt.get();
             Porters bossObjt = bossOpt.get();
             porterObjt.setId_jefe(bossObjt);
             portersRepository.savePorter(porterObjt);
         } else {
-            throw new GlobalException("Id is not Valid please try again");
+            throw new GlobalException("Id is not valid please try again");
         }
-
     }
 
     // To delete a porter
-    @Transactional
     public void deletePorter(Long id) {
-
         Optional<Porters> portersOpt = portersRepository.getPorterById(id);
         if (portersOpt.isPresent()) {
             Porters portersToEliminate = portersOpt.get();
             portersRepository.deletePorter(portersToEliminate.getId());
-
         } else {
-            throw new GlobalException("Id is not Valid please try again");
+            throw new GlobalException("Id is not valid please try again");
         }
-
     }
 
     // To list all porters
@@ -85,27 +72,14 @@ public class PortersService {
         if (id == null) {
             throw new GlobalException("Id is not Valid please try again");
         }
-
         return portersRepository.getPorterById(id)
-                .orElseThrow(() -> new GlobalException("Id no valido"));     
-       
+                .orElseThrow(() -> new GlobalException("Id no valido"));
+
     }
 
-    // To update a porter
-//    @Transactional
-//    public Porters updatePorter(Porters updatedPorter) {
-//        Optional<Porters> existingPorterOpt = portersRepository.getPorterById(updatedPorter.getId());
-//        if (existingPorterOpt.isPresent()) {
-//            Porters existingPorter = existingPorterOpt.get();
-//            existingPorter.setName(updatedPorter.getName());
-//            existingPorter.setCedula(updatedPorter.getCedula());
-//            existingPorter.setTelefono(updatedPorter.getTelefono());
-//            existingPorter.setEmploymentDate(updatedPorter.getEmploymentDate());
-//            existingPorter.setPosition(updatedPorter.getPosition());
-//            existingPorter.setId_jefe(updatedPorter.getId_jefe());
-//            return portersRepository.save(existingPorter);
-//        } else {
-//            throw new RuntimeException("Porter with ID " + updatedPorter.getId() + " not found.");
-//        }
-//    }
+    //To get porters depending on the position
+    public List<Porters> getPortersByPosition(Boolean position) {
+        return portersRepository.getPortersByPosition(position);
+    }
+
 }
