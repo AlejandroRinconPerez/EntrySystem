@@ -1,6 +1,7 @@
 package campus.u2.entrysystem.access.application;
 
-import campus.u2.entrysystem.utilities.exceptions.GlobalException;
+
+import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
 import campus.u2.entrysystem.access.domain.Access;
 import campus.u2.entrysystem.accessnotes.domain.AccessNote;
 import org.springframework.beans.factory.annotation.Autowired;
