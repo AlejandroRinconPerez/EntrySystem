@@ -60,7 +60,7 @@ public class CarnetController {
     }
     
     // To find a carnet by id people 
-    @GetMapping("/people/{idPeople }")
+    @GetMapping("/people/{idPeople}")
     public Carnet findCarnetByPeople(@PathVariable Long idPeople) {
         People people = peopleService.getPeopleById(idPeople); 
         if (people != null && people.getCarnet() != null) {
