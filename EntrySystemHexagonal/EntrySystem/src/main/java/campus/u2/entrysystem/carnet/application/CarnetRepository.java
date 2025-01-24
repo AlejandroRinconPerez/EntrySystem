@@ -8,11 +8,8 @@ import java.util.Optional;
 public interface CarnetRepository {
 
     Carnet saveCarnet(Carnet carnet);
-
     List<Carnet> getAllCarnets();
-
     Optional<Carnet> getCarnetById(Long id);
-    
     Optional<Carnet> findCarnetByPeople(People people); 
 
 }
