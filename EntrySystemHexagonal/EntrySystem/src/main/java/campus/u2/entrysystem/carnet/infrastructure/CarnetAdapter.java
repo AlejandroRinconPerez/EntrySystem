@@ -37,12 +37,14 @@ public class CarnetAdapter implements CarnetRepository{
 
     // To find a carnet for the id
     @Override
+    @Transactional
     public Optional<Carnet> getCarnetById(Long id) {
         return carnetRepository.findById(id);
     }
     
     // To find a carnet by the people 
     @Override
+    @Transactional
     public Optional<Carnet> findCarnetByPeople(People people) {
         return carnetRepository.findByPeople(people);
     }
