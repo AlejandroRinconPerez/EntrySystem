@@ -3,6 +3,7 @@ package campus.u2.entrysystem.invoice.domain;
 import campus.u2.entrysystem.membership.domain.Membership;
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.porters.domain.Porters;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -20,14 +21,17 @@ public class Invoice {
 
     private Boolean status;
 
+    @JsonBackReference("invoice-membership")
     @ManyToOne
     @JoinColumn(name = "idMembership")
     private Membership membership;
     
+    @JsonBackReference("invoice-people")
     @ManyToOne
     @JoinColumn(name= "idPeople")
     private People people;
     
+    @JsonBackReference("invoice-porter")
     @ManyToOne
     @JoinColumn(name= "idPorter")
     private Porters porter;
