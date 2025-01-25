@@ -74,4 +74,10 @@ public class VehicleService {
         }
         return vehicleRepository.findByPlate(plate);
     }
+    
+    
+     @Transactional
+    public Optional<Vehicle> findbyId(Long id) {
+        return vehicleRepository.findById(id);
+    }
 }
