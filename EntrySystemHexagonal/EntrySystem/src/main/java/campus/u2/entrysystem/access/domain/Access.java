@@ -4,6 +4,7 @@ import campus.u2.entrysystem.accessnotes.domain.AccessNote;
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.porters.domain.Porters;
 import campus.u2.entrysystem.vehicle.domain.Vehicle;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +36,8 @@ public class Access {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_people", nullable = true)
     private People people;
-
+    
+    @JsonManagedReference
     @OneToMany(mappedBy = "access", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Vehicle> vehicles = new ArrayList<>();
 
