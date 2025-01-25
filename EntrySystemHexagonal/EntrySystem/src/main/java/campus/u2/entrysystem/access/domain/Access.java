@@ -4,6 +4,7 @@ import campus.u2.entrysystem.accessnotes.domain.AccessNote;
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.porters.domain.Porters;
 import campus.u2.entrysystem.vehicle.domain.Vehicle;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -11,11 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-
-
 @Entity
 @Table(name = "access")
-
 public class Access {
 
     @Id
@@ -33,17 +31,20 @@ public class Access {
     @Column(nullable = true)
     private Boolean accessType;
 
+    //@JsonManagedReference("people-access")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_people", nullable = true)
     private People people;
     
-    @JsonManagedReference
-    @OneToMany(mappedBy = "access", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Vehicle> vehicles = new ArrayList<>();
-
+//    @JsonManagedReference("vehicle-access")
+//    @OneToMany(mappedBy = "access", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<Vehicle> vehicles = new ArrayList<>();
+    
+    @JsonManagedReference("notes-access")
     @OneToMany(mappedBy = "access", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<AccessNote> accessNotes = new ArrayList<>();
     
+    //@JsonBackReference("porters-access")
     @ManyToMany
     @JoinTable(
         name = "access_porters",
@@ -97,23 +98,23 @@ public class Access {
         return people;
     }
 
-    public void setPeople(People people) {
-        this.people = people;
-    }
+//    public void setPeople(People people) {
+//        this.people = people;
+//    }
+//
+//    public List<Vehicle> getVehicles() {
+//        return vehicles;
+//    }
 
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void addVehicles(Vehicle vehicle) {
-        this.vehicles.add(vehicle);
-        vehicle.setAccess(this);
-    }
-
-    public void removeVehicles(Vehicle vehicle) {
-        this.vehicles.remove(vehicle);
-        vehicle.setAccess(null);
-    }
+//    public void addVehicles(Vehicle vehicle) {
+//        this.vehicles.add(vehicle);
+//        vehicle.setAccess(this);
+//    }
+//
+//    public void removeVehicles(Vehicle vehicle) {
+//        this.vehicles.remove(vehicle);
+//        vehicle.setAccess(null);
+//    }
 
     public List<AccessNote> getAccessNotes() {
         return accessNotes;
