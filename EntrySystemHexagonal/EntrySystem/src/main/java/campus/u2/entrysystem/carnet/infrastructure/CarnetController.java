@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -70,13 +72,14 @@ public class CarnetController {
     }
     
     // To update the status of the carnet 
-    //@PutMapping("/{carnetId }")
-
-
-// // To update the status of the carnet
-//    @PutMapping("/{carnetId}/status")
-//    public ResponseEntity<Carnet> updateCarnetStatus(@PathVariable Long carnetId, @RequestParam boolean newStatus) {
-//        Carnet updatedCarnet = carnetService.updateCarnetStatus(carnetId, newStatus);
-//        return ResponseEntity.ok(updatedCarnet);
-//    }
+    @PutMapping("/{carnetId }")
+    public Carnet updateCarnetStatus(@PathVariable Long idCarnet, @RequestParam Boolean newStatus){
+        Carnet carnet = carnetService.getCarnetById(idCarnet); 
+        if (carnet != null) {
+            carnet.setStatus(newStatus);
+            return carnetService.saveCarnet(carnet);
+        }
+        return null; 
+    }
+    
 }
