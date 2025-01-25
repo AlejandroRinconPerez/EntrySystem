@@ -72,7 +72,7 @@ public class CarnetController {
     }
     
     // To update the status of the carnet 
-    @PutMapping("/{carnetId }")
+    @PutMapping("/{carnetId}")
     public Carnet updateCarnetStatus(@PathVariable Long idCarnet, @RequestParam Boolean newStatus){
         Carnet carnet = carnetService.getCarnetById(idCarnet); 
         if (carnet != null) {
