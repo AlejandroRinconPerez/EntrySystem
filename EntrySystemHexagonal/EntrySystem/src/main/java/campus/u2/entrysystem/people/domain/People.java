@@ -6,6 +6,7 @@ import campus.u2.entrysystem.invoice.domain.Invoice;
 import campus.u2.entrysystem.company.domain.Company;
 import campus.u2.entrysystem.carnet.domain.Carnet;
 import campus.u2.entrysystem.Utilities.BaseClassPeople;
+import campus.u2.entrysystem.access.domain.Access;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
@@ -23,24 +24,30 @@ public class People extends BaseClassPeople {
 
     private Boolean personType;
     
-    @JsonBackReference
+    @JsonBackReference("company-people")
     @ManyToOne(cascade =  CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_company", nullable = true)
     private Company company;
     
+    @JsonManagedReference("invoice-people")
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Invoice> invoices = new ArrayList<>();
 
+    @JsonManagedReference("equipment-people")
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RegisteredEquipment> equipments = new ArrayList<>();
     
-    @JsonManagedReference
+    @JsonManagedReference("vehicle-people")
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Vehicle> vehicles = new ArrayList<>();
     
-    @JsonManagedReference
+    @JsonManagedReference("carnet-people")
     @OneToOne(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Carnet carnet;
+    
+    //@JsonBackReference("people-access")
+    @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Access> access = new ArrayList<>();
 
     public People() {
     }
