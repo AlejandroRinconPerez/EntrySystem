@@ -4,6 +4,8 @@ import campus.u2.entrysystem.Utilities.BaseClassPeople;
 import campus.u2.entrysystem.user.domain.User;
 import campus.u2.entrysystem.access.domain.Access;
 import campus.u2.entrysystem.invoice.domain.Invoice;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,13 +36,16 @@ public class Porters extends BaseClassPeople {
     @ManyToOne
     @JoinColumn(name = "id_jefe")
     private Porters id_jefe;
-
+    
+    //@JsonManagedReference("porters-access")
     @ManyToMany(mappedBy = "porters")
     private Set<Access> accesses;
-
+    
+    @JsonManagedReference("porter-user")
     @OneToOne(mappedBy = "porter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private User user;
     
+    @JsonManagedReference("invoice-porter")
     @OneToMany(mappedBy = "porter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Invoice> invoices = new ArrayList<>();
     
