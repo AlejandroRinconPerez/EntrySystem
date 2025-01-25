@@ -3,6 +3,10 @@ package campus.u2.entrysystem.vehicle.domain;
 
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.access.domain.Access;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,13 +20,18 @@ public class Vehicle {
     private String plate;
 
     private boolean vehicleType;
+    
+    
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_people", nullable = false)
+    @JsonBackReference
+    
     private People people;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAccess", nullable = true)
+    @JsonIgnore
     private Access access;
 
     public Vehicle() {
