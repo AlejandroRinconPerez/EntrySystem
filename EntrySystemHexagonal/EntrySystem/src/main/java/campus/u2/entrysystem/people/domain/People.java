@@ -23,9 +23,10 @@ public class People extends BaseClassPeople {
 
     private Boolean personType;
     
-    @JsonManagedReference
-    @ManyToOne(cascade =  CascadeType.ALL, fetch = FetchType.EAGER)
+  
+    @ManyToOne(cascade =  CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_company", nullable = true)
+    @JsonManagedReference
     private Company company;
 
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -33,11 +34,13 @@ public class People extends BaseClassPeople {
 
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RegisteredEquipment> equipments = new ArrayList<>();
-
+    
+    
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Vehicle> vehicles = new ArrayList<>();
 
-    @OneToOne(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "people", cascade  = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Carnet carnet;
 
     public People() {
