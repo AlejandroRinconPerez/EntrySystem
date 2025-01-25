@@ -4,8 +4,6 @@ package campus.u2.entrysystem.vehicle.domain;
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.access.domain.Access;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -21,17 +19,14 @@ public class Vehicle {
 
     private boolean vehicleType;
     
-    
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_people", nullable = false)
     @JsonBackReference
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_people", nullable = false)
     private People people;
-
+    
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAccess", nullable = true)
-    @JsonIgnore
     private Access access;
 
     public Vehicle() {
