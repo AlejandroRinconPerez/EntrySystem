@@ -18,7 +18,7 @@ public class Company {
     private Long id_company;
     private String name;
     
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<People> peopleList = new ArrayList<>();
 
