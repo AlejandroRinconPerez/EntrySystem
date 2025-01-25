@@ -27,12 +27,12 @@ public class MembershipService {
     }
 
     @Transactional
-    public Membership findMembershipById(Long idMembership) {
+    public Optional<Membership> findMembershipById(Long idMembership) {
         if (idMembership == null) {
             throw new GlobalException("Membership ID cannot be null.");
         }
-        return membershipRepository.findById(idMembership)
-                .orElseThrow(() -> new GlobalException("Membership with ID " + idMembership + " not found."));
+        return membershipRepository.findById(idMembership);
+                
     }
 
     @Transactional

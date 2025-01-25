@@ -1,6 +1,7 @@
 package campus.u2.entrysystem.membership.domain;
 
 import campus.u2.entrysystem.invoice.domain.Invoice;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,10 @@ public class Membership {
     private Double price;
     private Boolean vehicleType;
 
+    
+    
+    
+    @JsonManagedReference("Membership-Invoice")
     @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Invoice> invoices = new ArrayList<>();
 
