@@ -51,7 +51,7 @@ public class CarnetController {
     }
     
     // To save a carnet for a person 
-    @PostMapping("/people/{idPerson}")
+    @PostMapping("/people/{idPeople}")
     public Carnet saveCarnetForPerson(@PathVariable Long idPeople, @RequestBody Carnet carnet) {
         People people = peopleService.getPeopleById(idPeople); 
         if (people != null) {
