@@ -3,6 +3,8 @@ package campus.u2.entrysystem.people.application;
 import campus.u2.entrysystem.company.domain.Company;
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.Utilities.exceptions.GlobalException;
+import campus.u2.entrysystem.carnet.application.CarnetRepository;
+import campus.u2.entrysystem.carnet.domain.Carnet;
 import campus.u2.entrysystem.registeredequipment.domain.RegisteredEquipment;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -14,10 +16,12 @@ import org.springframework.stereotype.Service;
 public class PeopleService  {
 
     private final PeopleRepository peopleRepository;
+    private final CarnetRepository carnetRepository;
 
     @Autowired
-    public PeopleService(PeopleRepository peopleRepository) {
+    public PeopleService(PeopleRepository peopleRepository, CarnetRepository carnetRepository) {
         this.peopleRepository = peopleRepository;
+        this.carnetRepository = carnetRepository; 
     }
 
 // To Save People 
@@ -41,10 +45,14 @@ public class PeopleService  {
             throw new GlobalException("Company cannot be empty");
         }
         People people = new People(personType, company, name, cedula, telefono);
+        if (Boolean.TRUE.equals(personType)) {
+            Carnet carnet = new Carnet(); 
+            carnet.setPeople(people);
+            people.setCarnet(carnet);
+        }
         return peopleRepository.savePeople(people);
 
     }
-
 
     public People savePeopleEquipment(People people, List<RegisteredEquipment> equipments
     ) {
