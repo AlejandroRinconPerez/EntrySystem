@@ -37,7 +37,8 @@ public class People extends BaseClassPeople {
     @JsonManagedReference
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Vehicle> vehicles = new ArrayList<>();
-
+    
+    @JsonManagedReference
     @OneToOne(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Carnet carnet;
 
