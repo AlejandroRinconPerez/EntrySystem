@@ -39,14 +39,14 @@ public class PortersService {
     }
 
     // To add a boss to a porter
-    public void addBossToPorter(Long idPorter, Long idBoss) {
+    public Porters addBossToPorter(Long idPorter, Long idBoss) {
         Optional<Porters> porterOpt = portersRepository.getPorterById(idPorter);
         Optional<Porters> bossOpt = portersRepository.getPorterById(idBoss);
         if (porterOpt.isPresent() || bossOpt.isPresent()) {
             Porters porterObjt = porterOpt.get();
             Porters bossObjt = bossOpt.get();
             porterObjt.setId_jefe(bossObjt);
-            portersRepository.savePorter(porterObjt);
+            return portersRepository.savePorter(porterObjt);
         } else {
             throw new GlobalException("Id is not valid please try again");
         }
