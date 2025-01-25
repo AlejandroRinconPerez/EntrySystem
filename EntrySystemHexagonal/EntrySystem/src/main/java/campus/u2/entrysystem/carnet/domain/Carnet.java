@@ -1,6 +1,8 @@
 package campus.u2.entrysystem.carnet.domain;
 
 import campus.u2.entrysystem.people.domain.People;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity 
@@ -16,6 +18,7 @@ public class Carnet {
     @Column(nullable = false)
     private Boolean status;
     
+    @JsonBackReference 
     @OneToOne
     @JoinColumn(name = "id_people", nullable = false)
     private People people; 
