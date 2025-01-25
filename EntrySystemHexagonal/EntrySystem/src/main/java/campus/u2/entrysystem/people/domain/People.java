@@ -23,24 +23,22 @@ public class People extends BaseClassPeople {
 
     private Boolean personType;
     
-  
-    @ManyToOne(cascade =  CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToOne(cascade =  CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_company", nullable = true)
-    @JsonManagedReference
     private Company company;
-
+    
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Invoice> invoices = new ArrayList<>();
 
     @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RegisteredEquipment> equipments = new ArrayList<>();
     
-    
-    @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
+    @OneToMany(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Vehicle> vehicles = new ArrayList<>();
 
-    @OneToOne(mappedBy = "people", cascade  = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "people", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Carnet carnet;
 
     public People() {
