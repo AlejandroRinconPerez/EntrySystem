@@ -1,6 +1,7 @@
 package campus.u2.entrysystem.user.domain;
 
 import campus.u2.entrysystem.porters.domain.Porters;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-  
+    @JsonBackReference("porter-user")
     @OneToOne
     @JoinColumn(name = "id_porters", foreignKey = @ForeignKey(name = "FK_user_porters"), nullable = false)
     private Porters porter;
