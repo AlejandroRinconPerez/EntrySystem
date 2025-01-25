@@ -1,6 +1,7 @@
 package campus.u2.entrysystem.accessnotes.domain;
 
 import campus.u2.entrysystem.access.domain.Access;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +15,8 @@ public class AccessNote {
 
     @Column(nullable = false)
     private String note;
-
+    
+    @JsonBackReference("notes-access")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_access", nullable = false)
     private Access access;
