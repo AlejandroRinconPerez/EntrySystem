@@ -4,7 +4,9 @@ package campus.u2.entrysystem.vehicle.domain;
 import campus.u2.entrysystem.people.domain.People;
 import campus.u2.entrysystem.access.domain.Access;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,15 +21,15 @@ public class Vehicle {
 
     private boolean vehicleType;
     
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference("vehicle-people")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_people", nullable = false)
     private People people;
     
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idAccess", nullable = true)
-    private Access access;
+//    @JsonBackReference("vehicle-access")
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "idAccess", nullable = true)
+//    private Access access;
 
     public Vehicle() {
     }
@@ -69,13 +71,13 @@ public class Vehicle {
         this.people = people;
     }
 
-    public Access getAccess() {
-        return access;
-    }
-
-    public void setAccess(Access access) {
-        this.access = access;
-    }
+//    public Access getAccess() {
+//        return access;
+//    }
+//
+//    public void setAccess(Access access) {
+//        this.access = access;
+//    }
 
     @Override
     public String toString() {
