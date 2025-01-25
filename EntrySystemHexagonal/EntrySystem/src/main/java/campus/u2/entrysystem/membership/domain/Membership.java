@@ -16,11 +16,8 @@ public class Membership {
     private Integer duration;
     private Double price;
     private Boolean vehicleType;
-
     
-    
-    
-    @JsonManagedReference("Membership-Invoice")
+    @JsonManagedReference("invoice-membership")
     @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Invoice> invoices = new ArrayList<>();
 
