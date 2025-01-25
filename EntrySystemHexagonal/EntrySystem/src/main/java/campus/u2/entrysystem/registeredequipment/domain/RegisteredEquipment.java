@@ -1,6 +1,7 @@
 package campus.u2.entrysystem.registeredequipment.domain;
 
 import campus.u2.entrysystem.people.domain.People;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class RegisteredEquipment {
     @Column(nullable = true)
     private String description;
 
+    @JsonBackReference("equipment-people")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_people", nullable = false)
     private People people;
